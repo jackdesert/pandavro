@@ -176,7 +176,11 @@ def schema_infer(df, times_as_micros=True):
 
 def __file_to_dataframe(f, schema, **kwargs):
     reader = fastavro.reader(f, reader_schema=schema)
-    return pd.DataFrame.from_records(list(reader), **kwargs)
+    lines = list(reader)
+    df = pd.DataFrame.from_records(list(reader), **kwargs)
+    del lines
+    del reader
+    return df
 
 
 def read_avro(file_path_or_buffer, schema=None, **kwargs):
